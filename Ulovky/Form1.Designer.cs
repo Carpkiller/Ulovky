@@ -218,12 +218,14 @@
             this.tabulkaTopUlovkovToolStripMenuItem.Name = "tabulkaTopUlovkovToolStripMenuItem";
             this.tabulkaTopUlovkovToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.tabulkaTopUlovkovToolStripMenuItem.Text = "Tabulka top ulovkov";
+            this.tabulkaTopUlovkovToolStripMenuItem.Click += new System.EventHandler(this.tabulkaTopUlovkovToolStripMenuItem_Click);
             // 
             // celkovaTabulkaToolStripMenuItem
             // 
             this.celkovaTabulkaToolStripMenuItem.Name = "celkovaTabulkaToolStripMenuItem";
             this.celkovaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.celkovaTabulkaToolStripMenuItem.Text = "Celkova tabulka";
+            this.celkovaTabulkaToolStripMenuItem.Click += new System.EventHandler(this.celkovaTabulkaToolStripMenuItem_Click);
             // 
             // buttonPredch
             // 

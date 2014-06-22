@@ -28,10 +28,26 @@ namespace Ulovky
             textBoxSposobLovu.AutoCompleteCustomSource = sourceSposobLovu;
             textBoxSposobLovu.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
             textBoxSposobLovu.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            var sourceCisloReviru = new AutoCompleteStringCollection();
+            sourceSposobLovu.AddRange(_jadro.SuggestCisloReviru);
+            textBoxCisloReviru.AutoCompleteCustomSource = sourceCisloReviru;
+            textBoxCisloReviru.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            textBoxCisloReviru.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            var sourceNazovReviru = new AutoCompleteStringCollection();
+            sourceNazovReviru.AddRange(_jadro.SuggestNazovReviru);
+            textBoxNazovReviru.AutoCompleteCustomSource = sourceNazovReviru;
+            textBoxNazovReviru.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            textBoxNazovReviru.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
+
+        public Ulovok Ulovok { get; set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Ulovok = new Ulovok(dateTimePicker1.Value,textBoxCisloReviru.Text,textBoxNazovReviru.Text,textBoxLokalita.Text,textBoxDruhRyby.Text,decimal.Parse(textBoxDlzka.Text),
+                decimal.Parse(textBoxVaha.Text), textBoxSposobLovu.Text, textBoxNastraha.Text, comboBoxPustena.SelectedItem.ToString()=="Ano", textBoxPoznamky.Text, string.IsNullOrEmpty(textBoxPoznamky.Text));
             DialogResult = DialogResult.OK;
             Close();
         }

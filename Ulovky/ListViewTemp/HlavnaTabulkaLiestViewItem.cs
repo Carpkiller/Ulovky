@@ -21,5 +21,21 @@ namespace Ulovky.ListViewTemp
             SubItems[11].Text = ulovok.FlagPoznamky.ToString();
         }
 
+        public HlavnaTabulkaLiestViewItem(Ulovok ulovok)
+            : base(new[] { "", "", "", "", "", "", "", "", "", "", "", ""})
+        {
+            SubItems[0].Text = ulovok.Datum.ToString("dddd, d MMMM, yyyy");
+            SubItems[1].Text = ulovok.CisloReviru;
+            SubItems[2].Text = ulovok.NazovReviru;
+            SubItems[3].Text = ulovok.Lokalita;
+            SubItems[4].Text = ulovok.DruhRyby;
+            SubItems[5].Text = ulovok.Dlzka.ToString() + "  cm";
+            SubItems[6].Text = ulovok.Vaha.ToString() + "  g";
+            SubItems[7].Text = ulovok.SposobLovu;
+            SubItems[8].Text = ulovok.Nastraha;
+            SubItems[9].Text = ulovok.Pustena.ToString();
+            SubItems[10].Text = ulovok.FlagPoznamky.ToString();
+        }
+
     }
 }

@@ -70,7 +70,22 @@ namespace Ulovky
         private void button1_Click(object sender, System.EventArgs e)
         {
             var pridanieUlovku = new PridanieUlovku(_jadro);
-            pridanieUlovku.Show();
+            if (pridanieUlovku.ShowDialog() == DialogResult.OK)
+            {
+                _jadro.PridajUlovok(pridanieUlovku.Ulovok);
+            }
+        }
+
+        private void celkovaTabulkaToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro,true);
+            tabulka.Show();
+        }
+
+        private void tabulkaTopUlovkovToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro, 1);
+            tabulka.Show();
         }
     }
 }
