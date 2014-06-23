@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Ulovky.ListViewTemp;
 using Ulovky.SumarnaTabulka;
@@ -20,21 +21,63 @@ namespace Ulovky
         public string[] SuggestNastraha { get; set; }
         public string[] SuggestCisloReviru { get; set; }
         public string[] SuggestNazovReviru { get; set; }
+        public List<Ulovok> AktualnyRok { get; set; }
+        public List<PrepoctoveTabulkyItem> ListPrepoctoveTabulky { get; set; } 
+
 
         public Jadro()
         {
+            AktualnyRok=new List<Ulovok>();
             _dbConnection = "Data Source=ulovky.db";
             ListRokov = NacitajRoky();
+            ListPrepoctoveTabulky = NacitajPrepoctoveTabulky();
             SuggestDruhRyby = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestDruhRyby);
             SuggestNastraha = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestNastraha);
             SuggestSposobLovu = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestSposobLovu);
             SuggestCisloReviru = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestCisloReviru);
             SuggestNazovReviru = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestNazovReviru);
+
+            SkontrolujPrepoctoveTabulky();
+        }
+
+        private List<PrepoctoveTabulkyItem> NacitajPrepoctoveTabulky()
+        {
+            var list = new List<PrepoctoveTabulkyItem>();
+
+            const string sql = "SELECT * FROM prepoctove_tabulky;";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        using (SQLiteDataReader reader = mycommand.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var druh = reader.GetString(0);
+                                var dlzka = reader.GetInt32(1).ToString();
+                                var vaha = reader.GetInt32(2).ToString();
+
+                                list.Add(new PrepoctoveTabulkyItem(druh, dlzka, vaha));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return list;
         }
 
         private List<KeyValuePair<string, string>> NacitajRoky()
         {
-            var list = new List<KeyValuePair<string, string>>()
+            var list = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("", "")
             };
@@ -86,6 +129,7 @@ namespace Ulovky
                         {
                             while (reader.Read())
                             {
+                                var index = reader.GetInt64(0);
                                 var datum = new DateTime(reader.GetInt32(3), reader.GetInt32(2), reader.GetInt32(1));
                                 var cisloReviru = reader.GetString(4);
                                 var nazovReviru = reader.GetString(5);
@@ -95,11 +139,11 @@ namespace Ulovky
                                 var vaha = reader.GetInt32(9);
                                 var sposobLovu = reader.GetString(10);
                                 var nastraha = reader.GetString(11);
-                                var pustena = reader.GetString(12) == "Ano";
+                                var pustena = reader.GetString(12) == "Ano" || reader.GetString(12) == "True";
                                 var poznamky = reader.GetString(13);
                                 var flagPoznamky = !string.IsNullOrEmpty(poznamky);
 
-                                list.Add(new Ulovok(datum, cisloReviru, nazovReviru, lokalita, druh, dlzka, vaha,
+                                list.Add(new Ulovok(index, datum, cisloReviru, nazovReviru, lokalita, druh, dlzka, vaha,
                                     sposobLovu, nastraha, pustena, poznamky, flagPoznamky));
                             }
                         }
@@ -114,11 +158,13 @@ namespace Ulovky
             return list.OrderBy(x =>x.Datum).ToList();
         }
 
-        public ListViewItem[] NacitajUlovky()
+        public HlavnaTabulkaLiestViewItem[] NacitajUlovky()
         {
             var list = VratListUlovky(Rok, User);
 
-            return list.Select((t, l) => new HlavnaTabulkaLiestViewItem(t, l + 1)).ToArray();
+            AktualnyRok = list;
+
+            return AktualnyRok.Select((t, l) => new HlavnaTabulkaLiestViewItem(t, l + 1)).ToArray();
         }
 
         public void NastavNasledujuceRoky(Button buttonNasled, Button buttonPredch)
@@ -126,11 +172,11 @@ namespace Ulovky
             var listRokov =
                 new List<string>(ListRokov.Where(x => x.Key == User).Select(x => x.Value).OrderBy(x => x).ToList());
 
-            var predchadzajuci = listRokov.First() != Rok.ToString()
-                ? listRokov[listRokov.IndexOf(Rok.ToString()) - 1]
+            var predchadzajuci = listRokov.First() != Rok.ToString(CultureInfo.InvariantCulture)
+                ? listRokov[listRokov.IndexOf(Rok.ToString(CultureInfo.InvariantCulture)) - 1]
                 : listRokov.Last();
-            var nasledujuci = listRokov.Last() != Rok.ToString()
-                ? listRokov[listRokov.IndexOf(Rok.ToString()) + 1]
+            var nasledujuci = listRokov.Last() != Rok.ToString(CultureInfo.InvariantCulture)
+                ? listRokov[listRokov.IndexOf(Rok.ToString(CultureInfo.InvariantCulture)) + 1]
                 : listRokov.First();
 
             buttonNasled.Text = nasledujuci;
@@ -170,7 +216,7 @@ namespace Ulovky
             return list.ToArray();
         }
 
-        public ListViewItem[] KoncorocnaTabulka()
+        public SumarnaTabulkaLiestViewItem[] KoncorocnaTabulka()
         {
             var list = new List<SumarnaTabulka.SumarnaTabulka>();
             var druhyRyby =
@@ -224,7 +270,7 @@ namespace Ulovky
                     throw new Exception(e.Message);
                 }
 
-                list.Add(new SumarnaTabulka.SumarnaTabulka(Rok, i.ToString(), druhyRyby[i - 1], vahaUlovkov[i - 1],
+                list.Add(new SumarnaTabulka.SumarnaTabulka(Rok, i.ToString(CultureInfo.InvariantCulture), druhyRyby[i - 1], vahaUlovkov[i - 1],
                     pocetUlovkov[i - 1]));
             }
 
@@ -319,7 +365,7 @@ namespace Ulovky
                             using (SQLiteDataReader reader = mycommandPocet.ExecuteReader())
                             {
                                 reader.Read();
-                                //var reader = reader1.Read();
+                                var index = reader.GetInt64(0);
                                 var datum = new DateTime(reader.GetInt32(3), reader.GetInt32(2), reader.GetInt32(1));
                                 var cisloReviru = reader.GetString(4);
                                 var nazovReviru = reader.GetString(5);
@@ -333,7 +379,7 @@ namespace Ulovky
                                 var poznamky = reader.GetString(13);
                                 var flagPoznamky = !string.IsNullOrEmpty(poznamky);
 
-                                list.Add(new Ulovok(datum, cisloReviru, nazovReviru, lokalita, druh, dlzka, vaha,
+                                list.Add(new Ulovok(index, datum, cisloReviru, nazovReviru, lokalita, druh, dlzka, vaha,
                                     sposobLovu, nastraha, pustena, poznamky, flagPoznamky));
                             }
                         }
@@ -377,5 +423,100 @@ namespace Ulovky
             }
         }
 
+        public void EditUlovok(Ulovok ulovok)
+        {
+            var sql = "UPDATE 'ulovky' SET " +
+                      "'den' = " + ulovok.Datum.Day + ", " +
+                      "'mesiac' = '" + ulovok.Datum.Month + "', " +
+                      "'rok' = '" + ulovok.Datum.Year + "', " +
+                      "'cislo_reviru' = '" + ulovok.CisloReviru + "', " +
+                      "'nazov_revir' = '" + ulovok.NazovReviru + "', " +
+                      "'lokalita' = '" + ulovok.Lokalita + "', " +
+                      "'druh' = '" + ulovok.DruhRyby + "', " +
+                      "'dlzka' = '" + ulovok.Dlzka + "', " +
+                      "'vaha' = '" + ulovok.Vaha + "', " +
+                      "'sposob_lovu' = '" + ulovok.SposobLovu + "', " +
+                      "'nastraha' = '" + ulovok.Nastraha + "', " +
+                      "'pustena' = '" + ulovok.Pustena + "', " +
+                      "'poznamky' = '" + ulovok.Poznamky + "' " +
+                      "WHERE ind = " + ulovok.Index + "";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+
+        public string PrepocitanaVaha(string druh, string dlzka)
+        {
+            return ListPrepoctoveTabulky.Where(x => x.Druh == druh && x.Dlzka == dlzka).Select(x => x.Vaha).FirstOrDefault();
+        }
+
+        private void SkontrolujPrepoctoveTabulky()
+        {
+            var druhyRyby = GetStringField("Select druh from prepoctove_tabulky;").ToList();
+
+            if (!druhyRyby.Contains("Šťuka severná"))
+            {
+                InsertQuery(SqlDotazy.SqlDotazy.PrepoctoveTabulkyStuka);
+                Console.WriteLine(@"Vlozene prepoctove tabulky - Stuka");
+            }
+            if (!druhyRyby.Contains("Zubáč veľkoústy"))
+            {
+                InsertQuery(SqlDotazy.SqlDotazy.PrepoctoveTabulkyZubac);
+                Console.WriteLine(@"Vlozene prepoctove tabulky - Zubac");
+            }
+            if (!druhyRyby.Contains("Sumec západný"))
+            {
+                InsertQuery(SqlDotazy.SqlDotazy.PrepoctoveTabulkySumec);
+                Console.WriteLine(@"Vlozene prepoctove tabulky - Sumec");
+            }
+            if (!druhyRyby.Contains("Jalec tmavý"))
+            {
+                InsertQuery(SqlDotazy.SqlDotazy.PrepoctoveTabulkyJalecTm);
+                Console.WriteLine(@"Vlozene prepoctove tabulky - Jalec tmavy");
+            }
+            if (!druhyRyby.Contains("Boleň dravý"))
+            {
+                InsertQuery(SqlDotazy.SqlDotazy.PrepoctoveTabulkyBolen);
+                Console.WriteLine(@"Vlozene prepoctove tabulky - Bolan");
+            }
+            if (!druhyRyby.Contains("Karas striebristý"))
+            {
+                InsertQuery(SqlDotazy.SqlDotazy.PrepoctoveTabulkyKaras);
+                Console.WriteLine(@"Vlozene prepoctove tabulky - Karas");
+            }
+        }
+
+        private void InsertQuery(string sql)
+        {
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

@@ -143,6 +143,7 @@
             this.textBoxDlzka.Name = "textBoxDlzka";
             this.textBoxDlzka.Size = new System.Drawing.Size(100, 20);
             this.textBoxDlzka.TabIndex = 12;
+            this.textBoxDlzka.TextChanged += new System.EventHandler(this.textBoxDlzka_TextChanged);
             // 
             // label5
             // 
@@ -241,7 +242,6 @@
             this.comboBoxPustena.Items.AddRange(new object[] {
             "Ano",
             "Nie"});
-            this.comboBoxPustena.SelectedIndex = 0;
             this.comboBoxPustena.Location = new System.Drawing.Point(341, 134);
             this.comboBoxPustena.Name = "comboBoxPustena";
             this.comboBoxPustena.Size = new System.Drawing.Size(65, 21);

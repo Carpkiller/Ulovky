@@ -69,10 +69,15 @@ namespace Ulovky
 
         private void button1_Click(object sender, System.EventArgs e)
         {
-            var pridanieUlovku = new PridanieUlovku(_jadro);
+            var pridanieUlovku = new PridanieUlovku(_jadro, _jadro.AktualnyRok.Count-1);
             if (pridanieUlovku.ShowDialog() == DialogResult.OK)
             {
                 _jadro.PridajUlovok(pridanieUlovku.Ulovok);
+                listView1.BeginUpdate();
+                listView1.Items.Clear();
+                listView1.Items.AddRange(_jadro.NacitajUlovky());
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                listView1.EndUpdate();
             }
         }
 
@@ -86,6 +91,20 @@ namespace Ulovky
         {
             SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro, 1);
             tabulka.Show();
+        }
+
+        private void button2_Click(object sender, System.EventArgs e)
+        {
+            var pridanieUlovku = new PridanieUlovku(_jadro, listView1.SelectedIndices[0]);
+            if (pridanieUlovku.ShowDialog() == DialogResult.OK)
+            {
+                _jadro.EditUlovok(pridanieUlovku.Ulovok);
+                listView1.BeginUpdate();
+                listView1.Items.Clear();
+                listView1.Items.AddRange(_jadro.NacitajUlovky());
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                listView1.EndUpdate();
+            }
         }
     }
 }

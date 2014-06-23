@@ -4,6 +4,7 @@ namespace Ulovky
 {
     public class Ulovok
     {
+        public long Index { get; set; }
         public DateTime Datum { get; set; }
         public string CisloReviru { get; set; }
         public string NazovReviru { get; set; }
@@ -17,8 +18,9 @@ namespace Ulovky
         public string Poznamky { get; set; }
         public bool FlagPoznamky { get; set; }
 
-        public Ulovok(DateTime datum, string cisloReviru, string nazovReviru, string lokalita, string druhRyby, decimal dlzka, decimal vaha, string sposobLovu, string nastraha, bool pustena, string poznamky, bool flagPoznamky)
+        public Ulovok(long index, DateTime datum, string cisloReviru, string nazovReviru, string lokalita, string druhRyby, decimal dlzka, decimal vaha, string sposobLovu, string nastraha, bool pustena, string poznamky, bool flagPoznamky)
         {
+            Index = index;
             Datum = datum;
             CisloReviru = cisloReviru;
             NazovReviru = nazovReviru;
