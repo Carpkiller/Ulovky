@@ -1,100 +1,96 @@
-﻿using System.Drawing;
+﻿using System.Linq;
 using System.Windows.Forms;
 
 namespace Ulovky.SumarnaTabulka
 {
     public partial class SumarnaTabulkaFrom : Form
     {
-        private Jadro _jadro;
-        private int p;
-
         public SumarnaTabulkaFrom(Jadro jadro)
         {
             var _jadro = jadro;
             InitializeComponent();
-
             listView1.BeginUpdate();
             listView1.Items.AddRange(_jadro.KoncorocnaTabulka());
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             listView1.EndUpdate();
             Text = @"Pouzivatel : " + _jadro.User + @" , rok : " + _jadro.Rok;
 
-            var e = listView1;
+            Height = 21*(jadro.KoncorocnaTabulka().Count() + 1) + 51;
+            var e = _jadro.KoncorocnaTabulka().Count();
             var h = listView1.Size.Height;
-            //this.Size = new Size(600, listView1.Items.Count*35);
-
-            //AutoSizeMode = AutoSizeMode.GrowAndShrink;
         }
 
         public SumarnaTabulkaFrom(Jadro jadro, bool p)
         {
             // TODO: Complete member initialization
-            _jadro = jadro;
+            Jadro jadro1 = jadro;
             InitializeComponent();
 
             listView1.BeginUpdate();
-            listView1.Items.AddRange(_jadro.CelkovaTabulka());
+            listView1.Items.AddRange(jadro1.CelkovaTabulka());
             listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             listView1.EndUpdate();
-            Text = @"Celkova tabulka - pouzivatel : " + _jadro.User;
+            Text = @"Celkova tabulka - pouzivatel : " + jadro1.User;
+            Height = (21*(jadro1.CelkovaTabulka().Count() + 1)) + 51;
         }
 
         public SumarnaTabulkaFrom(Jadro jadro, int p)
         {
             // TODO: Complete member initialization
-            _jadro = jadro;
+            Jadro jadro1 = jadro;
             if (p == 1)
             {
                 InitializeComponent();
                 listView1.Columns.Clear();
-                listView1.Columns.AddRange(new ColumnHeader[]
+                listView1.Columns.AddRange(new[]
                 {
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Datum"
+                        Text = @"Datum"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Cislo reviru"
+                        Text = @"Cislo reviru"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Nazov reviru"
+                        Text = @"Nazov reviru"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Lokalita"
+                        Text = @"Lokalita"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Druh ryby"
+                        Text = @"Druh ryby"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Dlzka"
+                        Text = @"Dlzka"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Vaha"
+                        Text = @"Vaha"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Sposob lovu"
+                        Text = @"Sposob lovu"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Nastraha"
+                        Text = @"Nastraha"
                     },
-                    new ColumnHeader()
+                    new ColumnHeader
                     {
-                        Text = "Pustena"
+                        Text = @"Pustena"
                     }
                 });
                 listView1.BeginUpdate();
-                listView1.Items.AddRange(_jadro.NajvacsieUlovky());
+                listView1.Items.AddRange(jadro1.NajvacsieUlovky());
                 listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 listView1.EndUpdate();
-                Text = @"Najvacsie ulovky - pouzivatel : " + _jadro.User;
+                Text = @"Najvacsie ulovky - pouzivatel : " + jadro1.User;
+                Height = (21*(jadro1.CelkovaTabulka().Count() + 1)) + 51;
             }
         }
     }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Ulovky.ListViewTemp;
 using Ulovky.SumarnaTabulka;
@@ -58,8 +57,8 @@ namespace Ulovky
                             while (reader.Read())
                             {
                                 var druh = reader.GetString(0);
-                                var dlzka = reader.GetInt32(1).ToString();
-                                var vaha = reader.GetInt32(2).ToString();
+                                var dlzka = reader.GetInt32(1).ToString(CultureInfo.InvariantCulture);
+                                var vaha = reader.GetInt32(2).ToString(CultureInfo.InvariantCulture);
 
                                 list.Add(new PrepoctoveTabulkyItem(druh, dlzka, vaha));
                             }
@@ -338,6 +337,8 @@ namespace Ulovky
 
             list = list.OrderByDescending(x => x.Pocet).ToList();
             list.Add(new SumarnaTabulka.SumarnaTabulka(Rok, "", "Spolu : ", vahaUlovkov.Sum(), pocetUlovkov.Sum()));
+
+            var de = list.Select((t, l) => new SumarnaTabulkaLiestViewItem(t, l + 1)).ToArray();
 
             return list.Select((t, l) => new SumarnaTabulkaLiestViewItem(t, l + 1)).ToArray();
         }
