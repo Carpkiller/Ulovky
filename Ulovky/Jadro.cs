@@ -519,5 +519,84 @@ namespace Ulovky
                 throw new Exception(e.Message);
             }
         }
+
+        public void PridajPouzivatela(string value)
+        {
+            var sql = "INSERT INTO user ('pouzivatel') VALUES('" + value + "')";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public List<string> NacitajUserov()
+        {
+            var list = new List<string>();
+
+            var sql = "Select distinct * from user";
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        using (SQLiteDataReader reader = mycommand.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var user = reader.GetString(0);
+
+                                list.Add(user);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return list;
+        }
+
+        public void PridajNovyRok(string rok, string user)
+        {
+            var sql = "INSERT INTO roky ('pouzivatel','rok') VALUES('" + user + "','"+rok+"')";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void RefreshRoky()
+        {
+            ListRokov = NacitajRoky();
+        }
     }
 }

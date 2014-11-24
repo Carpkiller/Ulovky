@@ -72,6 +72,12 @@
     <Compile Include="Graficke komponenty\PridanieUlovku.Designer.cs">
       <DependentUpon>PridanieUlovku.cs</DependentUpon>
     </Compile>
+    <Compile Include="Graficke komponenty\PridanieZaznamu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Graficke komponenty\PridanieZaznamu.Designer.cs">
+      <DependentUpon>PridanieZaznamu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graficke komponenty\Prihlasenie.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Graficke komponenty\PridanieUlovku.resx">
       <DependentUpon>PridanieUlovku.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Graficke komponenty\PridanieZaznamu.resx">
+      <DependentUpon>PridanieZaznamu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Graficke komponenty\Prihlasenie.resx">
       <DependentUpon>Prihlasenie.cs</DependentUpon>
