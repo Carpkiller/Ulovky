@@ -95,15 +95,23 @@ namespace Ulovky
 
         private void button2_Click(object sender, System.EventArgs e)
         {
-            var pridanieUlovku = new PridanieUlovku(_jadro, listView1.SelectedIndices[0]);
-            if (pridanieUlovku.ShowDialog() == DialogResult.OK)
+            if (listView1.SelectedIndices.Count != 0)
             {
-                _jadro.EditUlovok(pridanieUlovku.Ulovok);
-                listView1.BeginUpdate();
-                listView1.Items.Clear();
-                listView1.Items.AddRange(_jadro.NacitajUlovky());
-                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-                listView1.EndUpdate();
+                var pridanieUlovku = new PridanieUlovku(_jadro, listView1.SelectedIndices[0]);
+                if (pridanieUlovku.ShowDialog() == DialogResult.OK)
+                {
+                    _jadro.EditUlovok(pridanieUlovku.Ulovok);
+                    listView1.BeginUpdate();
+                    listView1.Items.Clear();
+                    listView1.Items.AddRange(_jadro.NacitajUlovky());
+                    listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                    listView1.EndUpdate();
+                }
+            }
+            else
+            {
+                MessageBox.Show(@"Musis vybrat nejaky ulovok, ktory chces editovat", @"Chyba", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
     }

@@ -21,7 +21,8 @@ namespace Ulovky
         public string[] SuggestCisloReviru { get; set; }
         public string[] SuggestNazovReviru { get; set; }
         public List<Ulovok> AktualnyRok { get; set; }
-        public List<PrepoctoveTabulkyItem> ListPrepoctoveTabulky { get; set; } 
+        public List<PrepoctoveTabulkyItem> ListPrepoctoveTabulky { get; set; }
+        public List<Revir> ListRevirov { get; set; } 
 
 
         public Jadro()
@@ -30,6 +31,7 @@ namespace Ulovky
             _dbConnection = "Data Source=ulovky.db";
             ListRokov = NacitajRoky();
             ListPrepoctoveTabulky = NacitajPrepoctoveTabulky();
+            ListRevirov = NacitajReviry();
             SuggestDruhRyby = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestDruhRyby);
             SuggestNastraha = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestNastraha);
             SuggestSposobLovu = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestSposobLovu);
@@ -37,6 +39,40 @@ namespace Ulovky
             SuggestNazovReviru = GetStringField(SqlDotazy.SqlDotazy.QuerySuggestNazovReviru);
 
             SkontrolujPrepoctoveTabulky();
+        }
+
+        private List<Revir> NacitajReviry()
+        {
+            var list = new List<Revir>();
+
+            const string sql = "SELECT cislo_reviru, nazov_revir FROM ulovky group by cislo_reviru;";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        using (SQLiteDataReader reader = mycommand.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var cisloReviru = reader.GetString(0);
+                                var nazovReviru = reader.GetString(1);
+
+                                list.Add(new Revir(cisloReviru, nazovReviru));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return list;
         }
 
         private List<PrepoctoveTabulkyItem> NacitajPrepoctoveTabulky()
@@ -597,6 +633,11 @@ namespace Ulovky
         public void RefreshRoky()
         {
             ListRokov = NacitajRoky();
+        }
+
+        public string NazovReviru(string cisloReviru)
+        {
+            return ListRevirov.Where(x => x.CisloReviru == cisloReviru).Select(x => x.NazovReviru).FirstOrDefault();
         }
     }
 }

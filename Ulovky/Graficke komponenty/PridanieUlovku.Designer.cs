@@ -95,6 +95,7 @@
             this.textBoxCisloReviru.Name = "textBoxCisloReviru";
             this.textBoxCisloReviru.Size = new System.Drawing.Size(100, 20);
             this.textBoxCisloReviru.TabIndex = 4;
+            this.textBoxCisloReviru.TextChanged += new System.EventHandler(this.textBoxCisloReviru_TextChanged);
             // 
             // textBoxNazovReviru
             // 
@@ -237,7 +238,6 @@
             // 
             // comboBoxPustena
             // 
-            this.comboBoxPustena.DisplayMember = "Ano";
             this.comboBoxPustena.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPustena.Items.AddRange(new object[] {
             "Ano",

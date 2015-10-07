@@ -85,6 +85,7 @@
       <DependentUpon>Prihlasenie.cs</DependentUpon>
     </Compile>
     <Compile Include="PrepoctoveTabulky.cs" />
+    <Compile Include="Revir.cs" />
     <Compile Include="SumarnaTabulka\SumarnaTabulka.cs" />
     <Compile Include="SumarnaTabulka\SumarnaTabulkaForm.cs">
       <SubType>Form</SubType>

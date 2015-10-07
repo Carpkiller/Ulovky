@@ -25,6 +25,7 @@ namespace Ulovky
                 textBoxNastraha.Text = jadro.AktualnyRok[index].Nastraha;
                 textBoxNazovReviru.Text = jadro.AktualnyRok[index].NazovReviru;
                 textBoxSposobLovu.Text = jadro.AktualnyRok[index].SposobLovu;
+                comboBoxPustena.SelectedIndex = jadro.AktualnyRok[index].Pustena ? 0 : 1;
 
                 _index = jadro.AktualnyRok[index].Index;
             }
@@ -85,6 +86,11 @@ namespace Ulovky
         private void textBoxDlzka_TextChanged(object sender, EventArgs e)
         {
             textBoxVaha.Text = _jadro.PrepocitanaVaha(textBoxDruhRyby.Text, textBoxDlzka.Text);
+        }
+
+        private void textBoxCisloReviru_TextChanged(object sender, EventArgs e)
+        {
+            textBoxNazovReviru.Text = _jadro.NazovReviru(textBoxCisloReviru.Text);
         }
     }
 }
