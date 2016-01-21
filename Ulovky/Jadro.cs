@@ -14,7 +14,7 @@ namespace Ulovky
         private readonly string _dbConnection;
         public List<KeyValuePair<string, string>> ListRokov { get; set; }
         public string User { get; set; }
-        public int Rok { get; set; }
+        public string Rok { get; set; }
         public string[] SuggestDruhRyby { get; set; }
         public string[] SuggestSposobLovu { get; set; }
         public string[] SuggestNastraha { get; set; }
@@ -147,7 +147,7 @@ namespace Ulovky
             return list;
         }
 
-        public List<Ulovok> VratListUlovky(int rok, string user)
+        public List<Ulovok> VratListUlovky(string rok, string user)
         {
             var list = new List<Ulovok>();
 
@@ -221,8 +221,6 @@ namespace Ulovky
         public string[] GetStringField(string sql)
         {
             var list = new List<string>();
-
-            //const string sql = "SELECT druh_ryby FROM druh_ryby;";
 
             try
             {
@@ -383,8 +381,6 @@ namespace Ulovky
         {
             var list = new List<Ulovok>();
             var druhyRyby = GetStringField(SqlDotazy.SqlDotazy.GetKompletneQuery(User)).ToList();
-            var pocetUlovkov = new List<int>();
-            var vahaUlovkov = new List<int>();
 
             for (int i = 1; i <= druhyRyby.Count; i++)
             {
@@ -638,6 +634,28 @@ namespace Ulovky
         public string NazovReviru(string cisloReviru)
         {
             return ListRevirov.Where(x => x.CisloReviru == cisloReviru).Select(x => x.NazovReviru).FirstOrDefault();
+        }
+
+        public void ZmazZaznam(int index)
+        {
+            var ulovok = AktualnyRok[index];
+            var sql = string.Format("DELETE from ulovky where ind = '{0}'", ulovok.Index);
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        var res = mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

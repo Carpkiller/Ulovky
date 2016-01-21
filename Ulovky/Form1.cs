@@ -37,13 +37,21 @@ namespace Ulovky
 
         private void koncorocnaTabulkaToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro);
-            tabulka.Show();
+            if (_jadro.User == null || _jadro.Rok == null)
+            {
+                MessageBox.Show(@"Musis sa prihlasit", @"Chyba", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro);
+                tabulka.Show();
+            }
         }
 
         private void buttonPredch_Click(object sender, System.EventArgs e)
         {
-            _jadro.Rok = int.Parse(buttonPredch.Text);
+            _jadro.Rok = buttonPredch.Text;
             listView1.Visible = true;
             listView1.BeginUpdate();
             listView1.Items.Clear();
@@ -56,7 +64,7 @@ namespace Ulovky
 
         private void buttonNasled_Click(object sender, System.EventArgs e)
         {
-            _jadro.Rok = int.Parse(buttonNasled.Text);
+            _jadro.Rok = buttonNasled.Text;
             listView1.Visible = true;
             listView1.BeginUpdate();
             listView1.Items.Clear();
@@ -83,14 +91,30 @@ namespace Ulovky
 
         private void celkovaTabulkaToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro,true);
-            tabulka.Show();
+            if (_jadro.User == null || _jadro.Rok == null)
+            {
+                MessageBox.Show(@"Musis sa prihlasit", @"Chyba", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro, true);
+                tabulka.Show();
+            }
         }
 
         private void tabulkaTopUlovkovToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro, 1);
-            tabulka.Show();
+            if (_jadro.User == null || _jadro.Rok == null)
+            {
+                MessageBox.Show(@"Musis sa prihlasit", @"Chyba", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                SumarnaTabulkaFrom tabulka = new SumarnaTabulkaFrom(_jadro, 1);
+                tabulka.Show();
+            }
         }
 
         private void button2_Click(object sender, System.EventArgs e)
@@ -111,6 +135,29 @@ namespace Ulovky
             else
             {
                 MessageBox.Show(@"Musis vybrat nejaky ulovok, ktory chces editovat", @"Chyba", MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button3_Click(object sender, System.EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count != 0)
+            {
+                var mssgResult = MessageBox.Show(@"Naozaj chces odstranit tento zaznam?", @"Potvrdenie",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                if (mssgResult == DialogResult.OK)
+                {
+                    _jadro.ZmazZaznam(listView1.SelectedIndices[0]);
+                    listView1.BeginUpdate();
+                    listView1.Items.Clear();
+                    listView1.Items.AddRange(_jadro.NacitajUlovky());
+                    listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                    listView1.EndUpdate();
+                }
+            }
+            else
+            {
+                MessageBox.Show(@"Musis vybrat nejaky ulovok, ktory chces zmazat", @"Chyba", MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
         }

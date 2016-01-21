@@ -2,14 +2,14 @@
 {
     public class SumarnaTabulka
     {
-        public int Rok { get; set; }
+        public string Rok { get; set; }
         public string Poradie { get; set; }
         public string DruhRyby { get; set; }
         public int Vaha { get; set; }
         public int Pocet { get; set; }
         public int Priemer { get; set; }
 
-        public SumarnaTabulka(int rok, string poradie, string druhRyby, int vaha, int pocet)
+        public SumarnaTabulka(string rok, string poradie, string druhRyby, int vaha, int pocet)
         {
             Rok = rok;
             Poradie = poradie;

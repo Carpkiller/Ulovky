@@ -1,13 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Ulovky.SumarnaTabulka
 {
     public partial class SumarnaTabulkaFrom : Form
     {
+        public bool P { get; private set; }
+
         public SumarnaTabulkaFrom(Jadro jadro)
         {
             var _jadro = jadro;
+            if (_jadro == null) throw new ArgumentNullException("_jadro");
             InitializeComponent();
             listView1.BeginUpdate();
             listView1.Items.AddRange(_jadro.KoncorocnaTabulka());
@@ -16,13 +20,17 @@ namespace Ulovky.SumarnaTabulka
             Text = @"Pouzivatel : " + _jadro.User + @" , rok : " + _jadro.Rok;
 
             Height = 21*(jadro.KoncorocnaTabulka().Count() + 1) + 51;
-            var e = _jadro.KoncorocnaTabulka().Count();
-            var h = listView1.Size.Height;
+        }
+
+        public override sealed string Text
+        {
+            get { return base.Text; }
+            set { base.Text = value; }
         }
 
         public SumarnaTabulkaFrom(Jadro jadro, bool p)
         {
-            // TODO: Complete member initialization
+            P = p;
             Jadro jadro1 = jadro;
             InitializeComponent();
 
@@ -36,7 +44,6 @@ namespace Ulovky.SumarnaTabulka
 
         public SumarnaTabulkaFrom(Jadro jadro, int p)
         {
-            // TODO: Complete member initialization
             Jadro jadro1 = jadro;
             if (p == 1)
             {

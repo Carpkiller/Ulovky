@@ -30,7 +30,7 @@ namespace Ulovky
         private void button2_Click(object sender, EventArgs e)
         {
             _jadro.User = comboBoxUser.SelectedValue.ToString();
-            _jadro.Rok = int.Parse(comboBoxRok.SelectedValue.ToString());
+            _jadro.Rok = comboBoxRok.SelectedValue.ToString();
             DialogResult = DialogResult.OK;
             Close();
         }
