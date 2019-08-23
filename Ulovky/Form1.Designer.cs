@@ -53,6 +53,7 @@
             this.celkovaTabulkaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonPredch = new System.Windows.Forms.Button();
             this.buttonNasled = new System.Windows.Forms.Button();
+            this.rozsireneStatistikyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,6 +78,7 @@
             this.listView1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(12, 69);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(1107, 512);
@@ -189,13 +191,13 @@
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.prihlasenieToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
-            this.menuToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.menuToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.menuToolStripMenuItem.Text = "Menu";
             // 
             // prihlasenieToolStripMenuItem
             // 
             this.prihlasenieToolStripMenuItem.Name = "prihlasenieToolStripMenuItem";
-            this.prihlasenieToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.prihlasenieToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.prihlasenieToolStripMenuItem.Text = "Prihlasenie";
             this.prihlasenieToolStripMenuItem.Click += new System.EventHandler(this.prihlasenieToolStripMenuItem_Click);
             // 
@@ -204,29 +206,30 @@
             this.tabulkyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.koncorocnaTabulkaToolStripMenuItem,
             this.tabulkaTopUlovkovToolStripMenuItem,
-            this.celkovaTabulkaToolStripMenuItem});
+            this.celkovaTabulkaToolStripMenuItem,
+            this.rozsireneStatistikyToolStripMenuItem});
             this.tabulkyToolStripMenuItem.Name = "tabulkyToolStripMenuItem";
-            this.tabulkyToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.tabulkyToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.tabulkyToolStripMenuItem.Text = "Tabulky";
             // 
             // koncorocnaTabulkaToolStripMenuItem
             // 
             this.koncorocnaTabulkaToolStripMenuItem.Name = "koncorocnaTabulkaToolStripMenuItem";
-            this.koncorocnaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.koncorocnaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.koncorocnaTabulkaToolStripMenuItem.Text = "Koncorocna tabulka";
             this.koncorocnaTabulkaToolStripMenuItem.Click += new System.EventHandler(this.koncorocnaTabulkaToolStripMenuItem_Click);
             // 
             // tabulkaTopUlovkovToolStripMenuItem
             // 
             this.tabulkaTopUlovkovToolStripMenuItem.Name = "tabulkaTopUlovkovToolStripMenuItem";
-            this.tabulkaTopUlovkovToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.tabulkaTopUlovkovToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.tabulkaTopUlovkovToolStripMenuItem.Text = "Tabulka top ulovkov";
             this.tabulkaTopUlovkovToolStripMenuItem.Click += new System.EventHandler(this.tabulkaTopUlovkovToolStripMenuItem_Click);
             // 
             // celkovaTabulkaToolStripMenuItem
             // 
             this.celkovaTabulkaToolStripMenuItem.Name = "celkovaTabulkaToolStripMenuItem";
-            this.celkovaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.celkovaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.celkovaTabulkaToolStripMenuItem.Text = "Celkova tabulka";
             this.celkovaTabulkaToolStripMenuItem.Click += new System.EventHandler(this.celkovaTabulkaToolStripMenuItem_Click);
             // 
@@ -247,6 +250,13 @@
             this.buttonNasled.TabIndex = 6;
             this.buttonNasled.UseVisualStyleBackColor = true;
             this.buttonNasled.Click += new System.EventHandler(this.buttonNasled_Click);
+            // 
+            // rozsireneStatistikyToolStripMenuItem
+            // 
+            this.rozsireneStatistikyToolStripMenuItem.Name = "rozsireneStatistikyToolStripMenuItem";
+            this.rozsireneStatistikyToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.rozsireneStatistikyToolStripMenuItem.Text = "Rozsirene statistiky";
+            this.rozsireneStatistikyToolStripMenuItem.Click += new System.EventHandler(this.rozsireneStatistikyToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -297,6 +307,7 @@
         private System.Windows.Forms.Button buttonPredch;
         private System.Windows.Forms.Button buttonNasled;
         private System.Windows.Forms.ColumnHeader columnHeaderPoradie;
+        private System.Windows.Forms.ToolStripMenuItem rozsireneStatistikyToolStripMenuItem;
     }
 }
 

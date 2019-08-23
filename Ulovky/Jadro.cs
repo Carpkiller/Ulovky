@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Ulovky.ListViewTemp;
+using Ulovky.Statistiky;
 using Ulovky.SumarnaTabulka;
 
 namespace Ulovky
@@ -260,9 +262,9 @@ namespace Ulovky
 
             for (int i = 1; i <= druhyRyby.Count; i++)
             {
-                String sqlPocet = "select count(*) from ulovky where rok='" + Rok + "' and user='" + User +
+                var sqlPocet = "select count(*) from ulovky where rok='" + Rok + "' and user='" + User +
                                   "' and druh='" + druhyRyby[i - 1] + "'";
-                String sqlVaha = "select sum(vaha) from ulovky where rok='" + Rok + "' and user='" + User +
+                var sqlVaha = "select sum(vaha) from ulovky where rok='" + Rok + "' and user='" + User +
                                  "' and druh='" + druhyRyby[i - 1] + "'";
 
                 try
@@ -322,9 +324,9 @@ namespace Ulovky
 
             for (int i = 1; i <= druhyRyby.Count; i++)
             {
-                String sqlPocet = "select count(*) from ulovky where user='" + User + "' and druh='" + druhyRyby[i - 1] +
+                var sqlPocet = "select count(*) from ulovky where user='" + User + "' and druh='" + druhyRyby[i - 1] +
                                   "'";
-                String sqlVaha = "select sum(vaha) from ulovky where user='" + User + "' and druh='" + druhyRyby[i - 1] +
+                var sqlVaha = "select sum(vaha) from ulovky where user='" + User + "' and druh='" + druhyRyby[i - 1] +
                                  "'";
 
                 try
@@ -656,6 +658,105 @@ namespace Ulovky
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public ListViewItem[] StatistickaTabluka(string type, string condition)
+        {
+            var list = new List<StatistikyItem>();
+            var druhyRyby = GetStringField(SqlDotazy.SqlDotazy.GetKompletneQuery(User)).ToList();
+            var pocetUlovkov = new List<int>();
+            var vahaUlovkov = new List<int>();
+            string sql = string.Empty;
+
+            switch (type)
+            {
+                case null:
+                    sql = $"SELECT druh, nastraha, count(nastraha) as pocet, sum(vaha) as vaha, sum(vaha) / count(nastraha) as priemer " +
+                              $"FROM ulovky " +
+                              "GROUP BY druh, nastraha;";
+                    break;
+                case "Nastraha":
+                    if (string.IsNullOrEmpty(condition))
+                    {
+                        sql = $"SELECT druh, nastraha, count(nastraha) as pocet, sum(vaha) as vaha, sum(vaha) / count(nastraha) as priemer " +
+                              $"FROM ulovky " +
+                              "GROUP BY druh, nastraha;";
+                    }
+                    else
+                    {
+                        sql = $"SELECT druh, nastraha, count(nastraha) as pocet, sum(vaha) as vaha, sum(vaha) / count(nastraha) as priemer " +
+                              $"FROM ulovky " +
+                              $"WHERE druh ='{condition}' " +
+                              "GROUP BY druh, nastraha;";
+                    }
+                    break;
+                case "Sposob":
+                    if (string.IsNullOrEmpty(condition))
+                    {
+                        sql = $"SELECT druh, sposob_lovu, count(sposob_lovu) as pocet, sum(vaha) as vaha, sum(vaha) / count(sposob_lovu) as priemer " +
+                              $"FROM ulovky " +
+                              "GROUP BY druh, sposob_lovu;";
+                    }
+                    else
+                    {
+                        sql = $"SELECT druh, sposob_lovu, count(sposob_lovu) as pocet, sum(vaha) as vaha, sum(vaha) / count(sposob_lovu) as priemer " +
+                              $"FROM ulovky " +
+                              $"WHERE sposob_lovu ='{condition}' " +
+                              "GROUP BY druh, sposob_lovu;";
+                    }
+                    break;
+                case "Revir":
+                    if (string.IsNullOrEmpty(condition))
+                    {
+                        sql = $"SELECT druh, cislo_reviru, nazov_revir, count(cislo_reviru) as pocet, sum(vaha) as vaha, sum(vaha) / count(sposob_lovu) as priemer " +
+                              $"FROM ulovky " +
+                              "GROUP BY druh, cislo_reviru;";
+                    }
+                    else
+                    {
+                        sql = $"SELECT druh, cislo_reviru, nazov_revir, count(cislo_reviru) as pocet, sum(vaha) as vaha, sum(vaha) / count(sposob_lovu) as priemer " +
+                              $"FROM ulovky " +
+                              $"WHERE sposob_lovu ='{condition}' " +
+                              "GROUP BY druh, cislo_reviru;";
+                    }
+                    break;
+            }
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+
+                    using (SQLiteCommand mycommandPocet = new SQLiteCommand(sql, cnn))
+                    {
+                        using (SQLiteDataReader reader = mycommandPocet.ExecuteReader())
+                        {
+                            string druhRyby = string.Empty;
+
+                            while (reader.Read())
+                            {
+                                if (type == "Revir")
+                                {
+                                    list.Add(new StatistikyItem("", reader.GetString(0), $"{reader.GetString(1)} - {reader.GetString(2)}", "",
+                                        reader.GetInt32(4), reader.GetInt32(3), reader.GetInt32(5)));
+                                }
+                                else
+                                {
+                                    list.Add(new StatistikyItem("", reader.GetString(0), reader.GetString(1), "",
+                                        reader.GetInt32(3), reader.GetInt32(2), reader.GetInt32(4)));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }            
+
+            return list.OrderBy(x => x.DruhRyby).ThenByDescending(y => y.Pocet).Select((t, l) => new StatistikyListViewItem(t)).ToArray();
         }
     }
 }

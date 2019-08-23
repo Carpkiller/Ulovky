@@ -84,8 +84,16 @@
     <Compile Include="Graficke komponenty\Prihlasenie.Designer.cs">
       <DependentUpon>Prihlasenie.cs</DependentUpon>
     </Compile>
+    <Compile Include="Statistiky\Statistiky.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Statistiky\Statistiky.Designer.cs">
+      <DependentUpon>Statistiky.cs</DependentUpon>
+    </Compile>
     <Compile Include="PrepoctoveTabulky.cs" />
     <Compile Include="Revir.cs" />
+    <Compile Include="Statistiky\StatistikyItem.cs" />
+    <Compile Include="Statistiky\StatistikyListViewItem.cs" />
     <Compile Include="SumarnaTabulka\SumarnaTabulka.cs" />
     <Compile Include="SumarnaTabulka\SumarnaTabulkaForm.cs">
       <SubType>Form</SubType>
@@ -111,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Graficke komponenty\Prihlasenie.resx">
       <DependentUpon>Prihlasenie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Statistiky\Statistiky.resx">
+      <DependentUpon>Statistiky.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SumarnaTabulka\SumarnaTabulkaForm.resx">
       <DependentUpon>SumarnaTabulkaForm.cs</DependentUpon>

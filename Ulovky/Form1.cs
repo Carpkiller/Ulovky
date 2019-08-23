@@ -161,5 +161,11 @@ namespace Ulovky
                     MessageBoxIcon.Warning);
             }
         }
+
+        private void rozsireneStatistikyToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            Statistiky.Statistiky statistiky = new Statistiky.Statistiky(_jadro);
+            statistiky.Show();
+        }
     }
 }
