@@ -146,7 +146,7 @@ namespace Ulovky
                 throw new Exception(e.Message);
             }
 
-            return list;
+            return list.Distinct().ToList();
         }
 
         public List<Ulovok> VratListUlovky(string rok, string user)

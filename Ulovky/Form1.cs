@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 using Ulovky.SumarnaTabulka;
 
 namespace Ulovky
@@ -16,6 +18,25 @@ namespace Ulovky
             //listView1.Items.AddRange(_jadro.NacitajUlovky(2013,"Lukas"));
             //listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             //listView1.EndUpdate();
+            Prihlasenie();
+        }
+
+        private void Prihlasenie()
+        {
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.PoslednyRok) && !string.IsNullOrEmpty(Properties.Settings.Default.PoslednyUser))
+            {
+                _jadro.Rok = Properties.Settings.Default.PoslednyRok;
+                _jadro.User = Properties.Settings.Default.PoslednyUser;
+
+                listView1.Visible = true;
+                listView1.BeginUpdate();
+                listView1.Items.Clear();
+                listView1.Items.AddRange(_jadro.NacitajUlovky());
+                listView1.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                listView1.EndUpdate();
+                Text = @"Pouzivatel : " + _jadro.User + @" , rok : " + _jadro.Rok;
+                _jadro.NastavNasledujuceRoky(buttonNasled, buttonPredch);
+            }
         }
 
         private void prihlasenieToolStripMenuItem_Click(object sender, System.EventArgs e)
@@ -32,6 +53,10 @@ namespace Ulovky
                 listView1.EndUpdate();
                 Text = @"Pouzivatel : " + _jadro.User + @" , rok : " + _jadro.Rok;
                 _jadro.NastavNasledujuceRoky(buttonNasled, buttonPredch);
+
+                Properties.Settings.Default.PoslednyRok = _jadro.Rok;
+                Properties.Settings.Default.PoslednyUser = _jadro.User;
+                Properties.Settings.Default.Save();
             }
         }
 

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeaderDatum = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderCisloReviru = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -51,9 +52,9 @@
             this.koncorocnaTabulkaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabulkaTopUlovkovToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.celkovaTabulkaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rozsireneStatistikyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonPredch = new System.Windows.Forms.Button();
             this.buttonNasled = new System.Windows.Forms.Button();
-            this.rozsireneStatistikyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,7 +118,7 @@
             // 
             // columnHeaderDlzka
             // 
-            this.columnHeaderDlzka.Text = "Dlazka";
+            this.columnHeaderDlzka.Text = "Dlzka";
             this.columnHeaderDlzka.Width = 25;
             // 
             // columnHeaderVaha
@@ -209,29 +210,36 @@
             this.celkovaTabulkaToolStripMenuItem,
             this.rozsireneStatistikyToolStripMenuItem});
             this.tabulkyToolStripMenuItem.Name = "tabulkyToolStripMenuItem";
-            this.tabulkyToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.tabulkyToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
             this.tabulkyToolStripMenuItem.Text = "Tabulky";
             // 
             // koncorocnaTabulkaToolStripMenuItem
             // 
             this.koncorocnaTabulkaToolStripMenuItem.Name = "koncorocnaTabulkaToolStripMenuItem";
-            this.koncorocnaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.koncorocnaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.koncorocnaTabulkaToolStripMenuItem.Text = "Koncorocna tabulka";
             this.koncorocnaTabulkaToolStripMenuItem.Click += new System.EventHandler(this.koncorocnaTabulkaToolStripMenuItem_Click);
             // 
             // tabulkaTopUlovkovToolStripMenuItem
             // 
             this.tabulkaTopUlovkovToolStripMenuItem.Name = "tabulkaTopUlovkovToolStripMenuItem";
-            this.tabulkaTopUlovkovToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.tabulkaTopUlovkovToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.tabulkaTopUlovkovToolStripMenuItem.Text = "Tabulka top ulovkov";
             this.tabulkaTopUlovkovToolStripMenuItem.Click += new System.EventHandler(this.tabulkaTopUlovkovToolStripMenuItem_Click);
             // 
             // celkovaTabulkaToolStripMenuItem
             // 
             this.celkovaTabulkaToolStripMenuItem.Name = "celkovaTabulkaToolStripMenuItem";
-            this.celkovaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.celkovaTabulkaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.celkovaTabulkaToolStripMenuItem.Text = "Celkova tabulka";
             this.celkovaTabulkaToolStripMenuItem.Click += new System.EventHandler(this.celkovaTabulkaToolStripMenuItem_Click);
+            // 
+            // rozsireneStatistikyToolStripMenuItem
+            // 
+            this.rozsireneStatistikyToolStripMenuItem.Name = "rozsireneStatistikyToolStripMenuItem";
+            this.rozsireneStatistikyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rozsireneStatistikyToolStripMenuItem.Text = "Rozsirene statistiky";
+            this.rozsireneStatistikyToolStripMenuItem.Click += new System.EventHandler(this.rozsireneStatistikyToolStripMenuItem_Click);
             // 
             // buttonPredch
             // 
@@ -251,13 +259,6 @@
             this.buttonNasled.UseVisualStyleBackColor = true;
             this.buttonNasled.Click += new System.EventHandler(this.buttonNasled_Click);
             // 
-            // rozsireneStatistikyToolStripMenuItem
-            // 
-            this.rozsireneStatistikyToolStripMenuItem.Name = "rozsireneStatistikyToolStripMenuItem";
-            this.rozsireneStatistikyToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.rozsireneStatistikyToolStripMenuItem.Text = "Rozsirene statistiky";
-            this.rozsireneStatistikyToolStripMenuItem.Click += new System.EventHandler(this.rozsireneStatistikyToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,6 +271,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Ulovky";
