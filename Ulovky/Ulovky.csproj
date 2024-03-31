@@ -88,6 +88,14 @@
     <Compile Include="Graficke komponenty\Prihlasenie.Designer.cs">
       <DependentUpon>Prihlasenie.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lokality\Lokality.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lokality\Lokality.Designer.cs">
+      <DependentUpon>Lokality.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lokality\LokalityItem.cs" />
+    <Compile Include="Lokality\LokalityListViewItem.cs" />
     <Compile Include="Statistiky\Statistiky.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Graficke komponenty\Prihlasenie.resx">
       <DependentUpon>Prihlasenie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lokality\Lokality.resx">
+      <DependentUpon>Lokality.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Statistiky\Statistiky.resx">
       <DependentUpon>Statistiky.cs</DependentUpon>

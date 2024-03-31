@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Ulovky.Lokality;
 using Ulovky.SumarnaTabulka;
 
 namespace Ulovky
@@ -191,6 +192,12 @@ namespace Ulovky
         {
             Statistiky.Statistiky statistiky = new Statistiky.Statistiky(_jadro);
             statistiky.Show();
+        }
+
+        private void zoznamLokalitToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            var lokality = new Lokality.Lokality(_jadro);
+            lokality.Show();
         }
     }
 }

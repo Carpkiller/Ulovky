@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Ulovky.ListViewTemp;
+using Ulovky.Lokality;
 using Ulovky.Statistiky;
 using Ulovky.SumarnaTabulka;
 
@@ -757,6 +757,149 @@ namespace Ulovky
             }            
 
             return list.OrderBy(x => x.DruhRyby).ThenByDescending(y => y.Pocet).Select((t, l) => new StatistikyListViewItem(t)).ToArray();
+        }
+
+        internal ListViewItem[] LoadLokality(string cisloReviru)
+        {
+            var list = new List<LokalityListViewItem>();
+
+            string sql = $"SELECT distinct u.lokalita, u.cislo_reviru, l.popis, l.gps " +
+                $"FROM ulovky u " +
+                $"left join lokality l on u.cislo_reviru=l.cislo_reviru and u.lokalita = l.lokalita " +
+                $"where u.cislo_reviru = '{cisloReviru}';";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        using (SQLiteDataReader reader = mycommand.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                //var cislo = reader.GetString(0);
+                                var lokalita = reader.GetString(0);
+                                var popis = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                                var gps = reader.IsDBNull(3) ? "" : reader.GetString(3);
+
+                                list.Add(new LokalityListViewItem(new LokalityItem(cisloReviru, lokalita, popis, gps)));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (e.Message.Contains("no such table: lokality"))
+                {
+                    CreateNewTable(SqlDotazy.SqlDotazy.VytvorTabulkuLokality);               
+                }
+                else
+                {
+                    throw new Exception(e.Message);
+                }                
+            }
+
+            return list.ToArray();
+        }
+
+        private void CreateNewTable(string sqlCreationScript)
+        {
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sqlCreationScript, cnn))
+                    {
+                        mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {              
+                throw new Exception(e.Message);
+            }
+        }
+
+        internal void LokalitaUpdate(string cisloReviru, string lokalita, string popis, string gps)
+        {
+            string sql = $"SELECT count(*) " +
+                $"FROM lokality l " +
+                $"where l.cislo_reviru = '{cisloReviru}' AND l.lokalita = '{lokalita}';";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        var count = mycommand.ExecuteScalar();
+
+                        if (count.ToString() == "0")
+                        {
+                            InsertLokalitu(cisloReviru, lokalita, popis, gps);
+                        }
+                        else
+                        {
+                            UpdateLokalita(cisloReviru, lokalita, popis, gps);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        private void UpdateLokalita(string cisloReviru, string lokalita, string popis, string gps)
+        {
+            string sql = $"UPDATE lokality " +
+                $"SET popis = '{popis}', " +
+                $"gps = '{gps}' " +
+                $"WHERE cislo_reviru = '{cisloReviru}' AND lokalita = '{lokalita}';";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        var res = mycommand.ExecuteNonQuery();                        
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        private void InsertLokalitu(string cisloReviru, string lokalita, string popis, string gps)
+        {
+            string sql = $"INSERT into lokality(cislo_reviru, lokalita, popis, gps)" +
+                $"VALUES('{cisloReviru}', '{lokalita}', '{popis}', '{gps}');";
+
+            try
+            {
+                using (SQLiteConnection cnn = new SQLiteConnection(new SQLiteConnection(_dbConnection)))
+                {
+                    cnn.Open();
+                    using (SQLiteCommand mycommand = new SQLiteCommand(sql, cnn))
+                    {
+                        var res = mycommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

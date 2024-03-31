@@ -55,6 +55,8 @@
             this.rozsireneStatistikyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buttonPredch = new System.Windows.Forms.Button();
             this.buttonNasled = new System.Windows.Forms.Button();
+            this.lokalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoznamLokalitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -180,7 +182,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuToolStripMenuItem,
-            this.tabulkyToolStripMenuItem});
+            this.tabulkyToolStripMenuItem,
+            this.lokalityToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1131, 24);
@@ -259,6 +262,21 @@
             this.buttonNasled.UseVisualStyleBackColor = true;
             this.buttonNasled.Click += new System.EventHandler(this.buttonNasled_Click);
             // 
+            // lokalityToolStripMenuItem
+            // 
+            this.lokalityToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zoznamLokalitToolStripMenuItem});
+            this.lokalityToolStripMenuItem.Name = "lokalityToolStripMenuItem";
+            this.lokalityToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.lokalityToolStripMenuItem.Text = "Lokality";
+            // 
+            // zoznamLokalitToolStripMenuItem
+            // 
+            this.zoznamLokalitToolStripMenuItem.Name = "zoznamLokalitToolStripMenuItem";
+            this.zoznamLokalitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zoznamLokalitToolStripMenuItem.Text = "Zoznam lokalit";
+            this.zoznamLokalitToolStripMenuItem.Click += new System.EventHandler(this.zoznamLokalitToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +328,8 @@
         private System.Windows.Forms.Button buttonNasled;
         private System.Windows.Forms.ColumnHeader columnHeaderPoradie;
         private System.Windows.Forms.ToolStripMenuItem rozsireneStatistikyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lokalityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zoznamLokalitToolStripMenuItem;
     }
 }
 
